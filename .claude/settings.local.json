@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(find C:/Users/conno/Downloads/nuxtmoduletest/playground/.nuxt -name *.ts)",
+      "Bash(npx nuxt:*)",
+      "Bash(node -e \"const d=require\\(''''fs''''\\).readFileSync\\(''''/dev/stdin'''',''''utf8''''\\); const j=JSON.parse\\(d\\); console.log\\(JSON.stringify\\({templates: j.options?.build?.templates?.map\\(t=>t.filename\\)}, null, 2\\)\\)\")",
+      "Bash(node -e \":*)",
+      "Bash(node -e \"const d=require\\(''''fs''''\\).readFileSync\\(0,''''utf8''''\\); try { const j=JSON.parse\\(d\\); console.log\\(''''plugins:'''', JSON.stringify\\(j.plugins\\)\\); console.log\\(''''alias keys:'''', Object.keys\\(j.alias||{}\\)\\); } catch\\(e\\) { console.log\\(''''parse error''''\\); console.log\\(d.substring\\(0,500\\)\\); }\")",
+      "Bash(curl -s -X PATCH http://localhost:3001/api/cron/newsletter -H \"Content-Type: application/json\" -d '{\"\"action\"\":\"\"start\"\"}')",
+      "Bash(curl -s http://localhost:3001/api/cron)"
+    ]
+  }
+}
