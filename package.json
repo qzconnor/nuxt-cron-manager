@@ -1,6 +1,6 @@
 {
   "name": "nuxt-cron-manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "My new Nuxt module",
   "repository": "qzconnor/nuxt-cron-manager",
   "license": "MIT",

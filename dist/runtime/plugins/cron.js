@@ -1,3 +1,4 @@
+import { defineNitroPlugin } from "nitropack/runtime";
 import { createCronManager } from "../server.js";
 import { __cronJobs, __cronOptions } from "#nuxt-cron-jobs";
 export default defineNitroPlugin((nitroApp) => {
