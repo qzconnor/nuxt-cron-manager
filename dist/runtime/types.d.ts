@@ -1,5 +1,5 @@
 export type CronPresets = 'everySecond' | 'everyFiveSeconds' | 'everyTenSeconds' | 'everyThirtySeconds' | 'everyMinute' | 'everyFiveMinutes' | 'everyTenMinutes' | 'everyThirtyMinutes' | 'everyHour' | 'everyTwoHours' | 'everySixHours' | 'everyTwelveHours' | 'daily' | 'weekly' | 'monthly' | 'yearly';
-export type CronTime = string | CronPresets | (() => string);
+export type CronTime = CronPresets | (string & {}) | (() => string);
 export interface CronJobOptions {
     /**
      * Whether the job starts enabled.
