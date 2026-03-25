@@ -1,6 +1,7 @@
 import { Cron } from 'croner'
 import type {
   CronJobDefinition,
+  CronJobOptions,
   CronJobStatus,
   CronManagerOptions,
   CronTime,

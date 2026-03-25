@@ -1,4 +1,4 @@
-import type { CronJobDefinition, CronJobStatus, CronManagerOptions, CronTime } from './types.js';
+import type { CronJobDefinition, CronJobOptions, CronJobStatus, CronManagerOptions, CronTime } from './types.js';
 export type { CronPresets, CronTime, CronJobOptions, CronJobDefinition, CronJobStatus, CronManagerOptions } from './types.js';
 export declare const cronPresets: Record<string, string>;
 /**

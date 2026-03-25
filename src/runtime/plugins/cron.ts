@@ -16,7 +16,8 @@ export default defineNitroPlugin((nitroApp) => {
 
   const count = Object.keys(__cronJobs).length
   const names = Object.keys(__cronJobs).join(', ')
-  console.info(`[nuxt-cron] ${count} job(s) registered${names ? ': ' + names : ''}`)
+  const info = '\x1B[96mℹ\x1B[0m'
+  console.info(`${info} Nuxt Cron Manager registered ${count} job(s)${names ? ': ' + names : ''}`)
 
   nitroApp.hooks.hookOnce('close', () => {
     manager.destroy()
