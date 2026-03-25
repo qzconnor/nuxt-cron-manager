@@ -16,7 +16,7 @@ export type CronPresets
     | 'monthly'
     | 'yearly'
 
-export type CronTime = string | CronPresets | (() => string)
+export type CronTime = CronPresets | (string & {}) | (() => string)
 
 export interface CronJobOptions {
   /**
