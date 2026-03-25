@@ -130,6 +130,11 @@ export class CronManager {
     }
     job.enabled = true
     if (!job.instance.isStopped()) job.instance.resume()
+    if (job.definition.options?.runOnInit) {
+      Promise.resolve(job.definition.run()).catch((err: unknown) =>
+        console.error(`[nuxt-cron] runOnInit error in "${name}":`, err),
+      )
+    }
     return true
   }
 
