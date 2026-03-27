@@ -45,15 +45,18 @@ function resolveTime(time: CronTime): string {
  * Define a cron job. Place this in `server/cron/*.ts`.
  *
  * @example
- * export default defineCronJob('everyMinute', async () => {
- *   console.log('tick')
+ * export default defineCronJob('everyMinute', async (userId?: string) => {
+ *   console.log('tick', userId)
  * })
+ *
+ * // Then start with args:
+ * cron.start('myJob', 'user-123')
  */
-export function defineCronJob(
+export function defineCronJob<TArgs extends unknown[] = []>(
   time: CronTime,
-  callback: () => void | Promise<void>,
+  callback: (...args: TArgs) => void | Promise<void>,
   options?: CronJobOptions,
-): CronJobDefinition {
+): CronJobDefinition<TArgs> {
   return { time, run: callback, options }
 }
 
@@ -62,10 +65,11 @@ export function defineCronJob(
 // ---------------------------------------------------------------------------
 
 interface ManagedJob {
-  definition: CronJobDefinition
+  definition: CronJobDefinition<unknown[]>
   instance: Cron
   lastRun: Date | null
   enabled: boolean
+  args: unknown[]
 }
 
 export class CronManager {
@@ -76,7 +80,7 @@ export class CronManager {
     this.opts = opts
   }
 
-  register(name: string, definition: CronJobDefinition): void {
+  register(name: string, definition: CronJobDefinition<unknown[]>): void {
     if (this.jobs.has(name)) {
       console.warn(`[nuxt-cron] Job "${name}" already registered — skipping.`)
       return
@@ -90,6 +94,7 @@ export class CronManager {
       instance: null as unknown as Cron,
       lastRun: null,
       enabled,
+      args: [],
     }
 
     const instance = new Cron(
@@ -99,7 +104,7 @@ export class CronManager {
         if (!managed.enabled) return
         managed.lastRun = new Date()
         try {
-          await definition.run()
+          await definition.run(...managed.args)
         }
         catch (err) {
           console.error(`[nuxt-cron] Error in job "${name}":`, err)
@@ -115,23 +120,24 @@ export class CronManager {
     }
 
     if (enabled && definition.options?.runOnInit) {
-      Promise.resolve(definition.run()).catch((err: unknown) =>
+      Promise.resolve(definition.run(...managed.args)).catch((err: unknown) =>
         console.error(`[nuxt-cron] runOnInit error in "${name}":`, err),
       )
     }
   }
 
-  /** Enable and start a job. Returns false if the job was not found. */
-  start(name: string): boolean {
+  /** Enable and start a job, optionally passing args to the callback. Returns false if the job was not found. */
+  start(name: string, ...args: unknown[]): boolean {
     const job = this.jobs.get(name)
     if (!job) {
       console.warn(`[nuxt-cron] start: job "${name}" not found.`)
       return false
     }
+    if (args.length > 0) job.args = args
     job.enabled = true
     if (!job.instance.isStopped()) job.instance.resume()
     if (job.definition.options?.runOnInit) {
-      Promise.resolve(job.definition.run()).catch((err: unknown) =>
+      Promise.resolve(job.definition.run(...job.args)).catch((err: unknown) =>
         console.error(`[nuxt-cron] runOnInit error in "${name}":`, err),
       )
     }

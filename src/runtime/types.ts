@@ -36,11 +36,11 @@ export interface CronJobOptions {
   timezone?: string
 }
 
-export interface CronJobDefinition {
+export interface CronJobDefinition<TArgs extends unknown[] = []> {
   /** Cron expression, preset name, or function returning an expression. */
   time: CronTime
   /** The function to execute. */
-  run: () => void | Promise<void>
+  run: (...args: TArgs) => void | Promise<void>
   options?: CronJobOptions
 }
 
